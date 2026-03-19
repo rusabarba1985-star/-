@@ -12,9 +12,9 @@ const CONFIG = {
     
     // Красивые изображения из интернета
     IMAGES: [
-        { id: 'cat', url: 'https://images.unsplash.com/photo-1514888286974-6c353e2b7b4c?w=150&h=150&fit=crop', name: '🐱 Кот' },
-        { id: 'dog', url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=150&h=150&fit=crop', name: '🐶 Собака' },
-        { id: 'nature', url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=150&h=150&fit=crop', name: '🌲 Природа' },
+        { id: 'cat', url: 'https://avatarko.ru/kartinka/488', name: '🐱 Кот' },
+        { id: 'dog', url: 'https://avatarko.ru/kartinka/32117', name: '🐶 Собака' },
+        { id: 'nature', url: 'https://www.imagetext.ru/', name: '🌲 Природа' },
         { id: 'food', url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=150&h=150&fit=crop', name: '🍕 Еда' },
         { id: 'travel', url: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=150&h=150&fit=crop', name: '✈️ Путешествия' },
         { id: 'tech', url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=150&h=150&fit=crop', name: '💻 Технологии' },
