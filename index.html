@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Русская Рулетка - Dice Game</title>
+    <title>RETRO DICE 90s - Черно-серый стиль</title>
     <style>
         * {
             margin: 0;
@@ -15,146 +15,222 @@
 
         body {
             min-height: 100vh;
-            background: radial-gradient(circle at center, #1a472a 0%, #0a1f12 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Courier New', 'Monaco', monospace;
+            font-family: 'Courier New', 'VT323', 'Monaco', monospace;
             padding: 20px;
-        }
-
-        /* Основной контейнер - стиль русской рулетки */
-        .game-container {
-            max-width: 550px;
-            width: 100%;
-            background: linear-gradient(145deg, #2c2b1f 0%, #1e1d15 100%);
-            border-radius: 60px 60px 40px 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
-            padding: 20px;
-            border: 3px solid #b87c4f;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* Ретро-полоски (движущиеся) */
-        .game-container::before {
+        /* Ретро-полоски 90-х (движущиеся, черно-серые) */
+        body::before {
             content: "";
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 200%;
             height: 200%;
-            background-image: repeating-linear-gradient(
-                45deg,
-                rgba(180, 50, 50, 0.15) 0px,
-                rgba(180, 50, 50, 0.15) 3px,
-                transparent 3px,
-                transparent 12px,
-                rgba(200, 180, 60, 0.1) 12px,
-                rgba(200, 180, 60, 0.1) 15px,
-                transparent 15px,
-                transparent 24px
-            );
-            animation: stripeMove 20s linear infinite;
+            background-image: 
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(80, 80, 80, 0.3) 0px,
+                    rgba(80, 80, 80, 0.3) 2px,
+                    transparent 2px,
+                    transparent 8px,
+                    rgba(50, 50, 50, 0.2) 8px,
+                    rgba(50, 50, 50, 0.2) 10px,
+                    transparent 10px,
+                    transparent 20px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(100, 100, 100, 0.15) 0px,
+                    rgba(100, 100, 100, 0.15) 1px,
+                    transparent 1px,
+                    transparent 4px
+                );
+            animation: stripesMove 15s linear infinite;
             pointer-events: none;
             z-index: 0;
         }
 
-        @keyframes stripeMove {
+        @keyframes stripesMove {
             0% { transform: translate(0, 0); }
             100% { transform: translate(-50px, -50px); }
         }
 
-        /* Винтажный кожаный эффект */
-        .game-content {
+        /* Мультяшный контейнер */
+        .game-container {
+            max-width: 600px;
+            width: 100%;
+            background: #2a2a2a;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+            padding: 20px;
             position: relative;
             z-index: 2;
-            background: rgba(30, 27, 20, 0.7);
-            border-radius: 40px;
-            backdrop-filter: blur(3px);
-            padding: 20px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 5px 10px rgba(0,0,0,0.3);
+            border: 4px solid #4a4a4a;
+            animation: borderPulse 2s ease-in-out infinite;
         }
 
-        /* Счетчик денег */
+        @keyframes borderPulse {
+            0%, 100% { border-color: #4a4a4a; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+            50% { border-color: #6a6a6a; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+        }
+
+        /* Мультяшный контент */
+        .game-content {
+            background: linear-gradient(135deg, #1f1f1f 0%, #151515 100%);
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Счетчик денег (черно-серый) */
         .money-counter {
-            background: #000000aa;
-            backdrop-filter: blur(8px);
-            border-radius: 50px;
+            background: #000000cc;
+            backdrop-filter: blur(5px);
+            border-radius: 60px;
             padding: 12px 20px;
             text-align: center;
-            margin-bottom: 20px;
-            border: 1px solid #ffd966;
-            box-shadow: 0 0 10px rgba(255,200,0,0.3);
+            margin-bottom: 25px;
+            border: 2px solid #5a5a5a;
+            box-shadow: 0 5px 0 #2a2a2a;
+            transition: transform 0.1s ease;
         }
 
         .money-label {
             font-size: 14px;
-            letter-spacing: 2px;
-            color: #d4af37;
+            letter-spacing: 3px;
+            color: #aaa;
             text-transform: uppercase;
             font-weight: bold;
         }
 
         .money-amount {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: bold;
-            color: #ffd966;
-            text-shadow: 0 0 5px #ff6600;
-            font-family: monospace;
+            color: #e0e0e0;
+            text-shadow: 0 0 5px #888;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
         }
 
-        /* Кубик */
+        /* Кубик 3D стиль */
         .dice-area {
             text-align: center;
-            margin: 15px 0;
+            margin: 20px 0;
+            perspective: 800px;
         }
 
         .dice {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             margin: 0 auto;
-            background: #f0f0f0;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        .dice-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #f5f5f5 0%, #dddddd 100%);
             border-radius: 20px;
+            box-shadow: inset 0 2px 5px rgba(255,255,255,0.8), 0 5px 15px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 70px;
+            font-size: 80px;
             font-weight: bold;
-            box-shadow: 0 10px 0 #9b6a3c, inset 0 1px 4px white;
-            transition: all 0.1s ease;
-            background: linear-gradient(145deg, #fff, #e0e0e0);
-            color: #2c3e2f;
-            font-family: monospace;
+            color: #333;
+            border: 3px solid #aaa;
+        }
+
+        /* Позиционирование граней куба */
+        .dice-face-1 { transform: translateZ(70px); }
+        .dice-face-2 { transform: rotateY(180deg) translateZ(70px); }
+        .dice-face-3 { transform: rotateY(90deg) translateZ(70px); }
+        .dice-face-4 { transform: rotateY(-90deg) translateZ(70px); }
+        .dice-face-5 { transform: rotateX(90deg) translateZ(70px); }
+        .dice-face-6 { transform: rotateX(-90deg) translateZ(70px); }
+
+        /* Точки на кубике */
+        .dot {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #222;
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 2px rgba(0,0,0,0.3), 1px 1px 1px rgba(255,255,255,0.5);
+        }
+
+        /* Расположение точек для каждой грани */
+        .face {
             position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .dice-face-1 .face, .dice-face-2 .face, .dice-face-3 .face, 
+        .dice-face-4 .face, .dice-face-5 .face, .dice-face-6 .face {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
 
-        .rolling {
-            animation: rollShake 0.4s cubic-bezier(0.4, 0, 0.2, 1) 3;
+        /* Анимация вращения */
+        .rolling-3d {
+            animation: roll3d 0.6s cubic-bezier(0.4, 0, 0.2, 1) 2;
         }
 
-        @keyframes rollShake {
-            0% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(15deg) scale(1.1); }
-            50% { transform: rotate(-15deg) scale(1.1); }
-            75% { transform: rotate(8deg) scale(1.05); }
-            100% { transform: rotate(0deg) scale(1); }
+        @keyframes roll3d {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            25% { transform: rotateX(360deg) rotateY(180deg); }
+            50% { transform: rotateX(720deg) rotateY(360deg); }
+            75% { transform: rotateX(540deg) rotateY(540deg); }
+            100% { transform: rotateX(720deg) rotateY(720deg); }
+        }
+
+        /* Таймер обратного отсчета */
+        .timer-box {
+            background: #000000aa;
+            border-radius: 50px;
+            padding: 8px 15px;
+            margin: 15px auto;
+            text-align: center;
+            display: inline-block;
+            width: auto;
+            border: 1px solid #5a5a5a;
+        }
+
+        .timer-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ddd;
+            font-family: monospace;
         }
 
         /* Ставки фишками */
         .bets-section {
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         .bets-title {
             text-align: center;
-            color: #e6c87c;
-            font-size: 14px;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-            border-bottom: 1px dashed #b87c4f;
+            color: #bbb;
+            font-size: 16px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            border-bottom: 2px dotted #5a5a5a;
             display: inline-block;
             width: 100%;
+            text-transform: uppercase;
         }
 
         .bets-grid {
@@ -165,51 +241,52 @@
         }
 
         .bet-chip {
-            background: radial-gradient(circle at 30% 30%, #ffd966, #b87c2e);
+            background: radial-gradient(circle at 30% 30%, #6a6a6a, #3a3a3a);
             border: none;
-            border-radius: 60px;
+            border-radius: 20px;
             padding: 12px 0;
             font-weight: bold;
-            font-size: 20px;
-            color: #1e2a1c;
-            text-shadow: 0 1px 0 rgba(255,255,200,0.8);
-            box-shadow: 0 5px 0 #6b3e1a;
+            font-size: 22px;
+            color: #f0f0f0;
+            text-shadow: 0 1px 0 #1a1a1a;
+            box-shadow: 0 6px 0 #2a2a2a;
             cursor: pointer;
             transition: 0.07s linear;
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             font-weight: 800;
+            letter-spacing: 1px;
         }
 
         .bet-chip:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 #6b3e1a;
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #2a2a2a;
         }
 
-        .bet-chip.special {
-            background: radial-gradient(circle at 30% 30%, #c0c0c0, #7a5a3a);
+        .bet-chip.disabled {
+            opacity: 0.5;
+            transform: translateY(0);
+            cursor: not-allowed;
         }
 
-        /* Коэффициенты */
         .bet-chip small {
             display: block;
             font-size: 11px;
-            color: #1f2c0e;
+            color: #ccc;
         }
 
         /* История */
         .history-box {
-            background: #0f0e0aaa;
-            backdrop-filter: blur(4px);
+            background: #0a0a0acc;
             border-radius: 20px;
-            padding: 12px;
-            margin-top: 15px;
-            border: 1px solid #ab8e54;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #5a5a5a;
         }
 
         .history-title {
-            font-size: 12px;
-            color: #dbb85c;
-            margin-bottom: 8px;
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 10px;
             letter-spacing: 2px;
         }
 
@@ -217,298 +294,383 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            min-height: 45px;
-            font-size: 28px;
-            font-weight: bold;
+            min-height: 60px;
             align-items: center;
         }
 
         .history-item {
-            background: #2f2a1f;
-            width: 48px;
-            height: 48px;
+            background: #2a2a2a;
+            width: 55px;
+            height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
-            box-shadow: inset 0 0 0 1px #dbb85c33, 0 2px 4px black;
-            font-size: 28px;
+            border-radius: 15px;
+            box-shadow: inset 0 0 0 1px #6a6a6a, 0 3px 5px black;
+            font-size: 32px;
+            font-weight: bold;
+            color: #ddd;
         }
 
-        /* сообщение результата */
         .result-message {
-            background: #00000099;
+            background: #000000bb;
             border-radius: 30px;
-            padding: 8px;
+            padding: 12px;
             text-align: center;
-            margin-top: 12px;
+            margin-top: 15px;
             font-size: 14px;
-            color: #ffdd99;
+            color: #ccc;
             font-weight: bold;
-            transition: 0.2s;
+            border-left: 4px solid #6a6a6a;
+            border-right: 4px solid #6a6a6a;
         }
 
         .info {
             font-size: 11px;
             text-align: center;
-            margin-top: 12px;
-            color: #bd9a5a;
+            margin-top: 15px;
+            color: #8a8a8a;
+        }
+
+        .bet-status {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 13px;
+            color: #ffaa66;
         }
 
         button {
             background: none;
             border: none;
         }
+
+        .flex-center {
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
 <div class="game-container">
     <div class="game-content">
-        <!-- БЕСКОНЕЧНЫЕ ДЕНЬГИ: просто огромный баланс, который не убывает -->
         <div class="money-counter">
-            <div class="money-label">💰 ВАШ БАНК 💰</div>
-            <div class="money-amount" id="balanceDisplay">10,000</div>
+            <div class="money-label">💰 БЕСКОНЕЧНЫЙ БАНК 💰</div>
+            <div class="money-amount" id="balanceDisplay">1,000,000</div>
         </div>
 
-        <!-- Кубик с анимацией -->
+        <!-- 3D Кубик -->
         <div class="dice-area">
-            <div class="dice" id="diceElement">🎲</div>
+            <div class="dice" id="dice3d">
+                <div class="dice-face dice-face-1">
+                    <div class="face" id="face1"></div>
+                </div>
+                <div class="dice-face dice-face-2">
+                    <div class="face" id="face2"></div>
+                </div>
+                <div class="dice-face dice-face-3">
+                    <div class="face" id="face3"></div>
+                </div>
+                <div class="dice-face dice-face-4">
+                    <div class="face" id="face4"></div>
+                </div>
+                <div class="dice-face dice-face-5">
+                    <div class="face" id="face5"></div>
+                </div>
+                <div class="dice-face dice-face-6">
+                    <div class="face" id="face6"></div>
+                </div>
+            </div>
         </div>
 
-        <!-- Ставки: чет/нечет + числа 1-6 -->
+        <!-- Таймер -->
+        <div class="flex-center">
+            <div class="timer-box">
+                <div class="timer-text" id="timerDisplay">⚡ Жду ставку ⚡</div>
+            </div>
+        </div>
+
+        <div class="bet-status" id="betStatus">🎲 Выберите ставку 🎲</div>
+
         <div class="bets-section">
             <div class="bets-title">🎲 СТАВКИ ФИШКАМИ 🎲</div>
             <div class="bets-grid">
                 <button class="bet-chip" data-bet="even">ЧЁТ <br><small>x2</small></button>
                 <button class="bet-chip" data-bet="odd">НЕЧЁТ <br><small>x2</small></button>
-                <button class="bet-chip special" data-bet="1">1 <br><small>x3.5</small></button>
-                <button class="bet-chip special" data-bet="2">2 <br><small>x3.5</small></button>
-                <button class="bet-chip special" data-bet="3">3 <br><small>x3.5</small></button>
-                <button class="bet-chip special" data-bet="4">4 <br><small>x3.5</small></button>
-                <button class="bet-chip special" data-bet="5">5 <br><small>x3.5</small></button>
-                <button class="bet-chip special" data-bet="6">6 <br><small>x3.5</small></button>
+                <button class="bet-chip" data-bet="1">⚀ 1 <br><small>x3.5</small></button>
+                <button class="bet-chip" data-bet="2">⚁ 2 <br><small>x3.5</small></button>
+                <button class="bet-chip" data-bet="3">⚂ 3 <br><small>x3.5</small></button>
+                <button class="bet-chip" data-bet="4">⚃ 4 <br><small>x3.5</small></button>
+                <button class="bet-chip" data-bet="5">⚄ 5 <br><small>x3.5</small></button>
+                <button class="bet-chip" data-bet="6">⚅ 6 <br><small>x3.5</small></button>
             </div>
         </div>
 
-        <!-- История выпавших чисел -->
         <div class="history-box">
             <div class="history-title">📜 ИСТОРИЯ ВЫПАДЕНИЙ</div>
             <div class="history-list" id="historyList">
-                <div style="color:#b87c4f; font-size:14px;">—</div>
+                <div style="color:#6a6a6a; font-size:14px;">—</div>
             </div>
         </div>
-        <div class="result-message" id="resultMessage">⚡ Сделайте ставку! Кубик падает каждые 10 сек ⚡</div>
-        <div class="info">⚡ Чёт/Нечет x2 | Цифра x3.5 | Выигрыш начисляется бесконечно ⚡</div>
+        <div class="result-message" id="resultMessage">🎲 Сделайте ставку! Бросок через 5 секунд 🎲</div>
+        <div class="info">⭐ ЧЁТ/НЕЧЁТ x2 | ЦИФРА x3.5 | БЕСКОНЕЧНЫЙ БАНК ⭐</div>
     </div>
 </div>
 
 <script>
-    // ------ БЕСКОНЕЧНЫЕ ДЕНЬГИ ------
-    // Баланс всегда огромный и при выигрышах увеличивается, но не тратится по факту
-    // Чтобы имитировать "бесконечные деньги", мы даём стартовый баланс 1_000_000_000,
-    // но игрок может ставить любую сумму, проигрыши не отнимают реально (игра казино не забирает фишки)
-    // Однако по условию: "бесконечно денег" значит баланс не уходит в минус, можно ставить бесконечно.
-    // Сделаем так: баланс всегда ≥ 1_000_000, и при ставке он не уменьшается, но выигрыш зачисляется!
-    // Но для реализма: пусть отображается баланс, который только растёт. Ставки условные, но выигрыши прибавляются.
-    
-    let balance = 1000000;   // бесконечный запас
-    let currentBetValue = 100;   // фиксированная ставка "фишками" = 100
-    let lastRoll = null;
-    let rollTimeout = null;
+    // ========== ИНИЦИАЛИЗАЦИЯ ==========
+    let balance = 1000000;      // бесконечный банк
+    const stakeValue = 100;     // ставка фишками
+    let currentBet = null;      // текущая ставка (even, odd, 1-6)
+    let timerInterval = null;
+    let countdown = 0;
     let isRolling = false;
-
-    // История (макс 10 записей)
+    let canPlaceBet = true;      // можно ли делать ставку
     let historyNumbers = [];
 
     // Элементы DOM
-    const diceEl = document.getElementById('diceElement');
     const balanceDisplay = document.getElementById('balanceDisplay');
-    const historyList = document.getElementById('historyList');
+    const historyListEl = document.getElementById('historyList');
     const resultMsg = document.getElementById('resultMessage');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const betStatus = document.getElementById('betStatus');
+    const dice3d = document.getElementById('dice3d');
+    const betChips = document.querySelectorAll('.bet-chip');
 
     // Коэффициенты
     const multipliers = {
-        'even': 2,
-        'odd': 2,
-        '1': 3.5,
-        '2': 3.5,
-        '3': 3.5,
-        '4': 3.5,
-        '5': 3.5,
-        '6': 3.5
+        'even': 2, 'odd': 2,
+        '1': 3.5, '2': 3.5, '3': 3.5,
+        '4': 3.5, '5': 3.5, '6': 3.5
     };
 
-    // Функция обновления UI баланса
-    function updateBalanceUI() {
-        balanceDisplay.innerText = Math.floor(balance).toLocaleString();
+    // ========== РИСОВАНИЕ ТОЧЕК НА КУБИКЕ ==========
+    function drawDiceDots() {
+        // Для каждой грани рисуем точки в зависимости от числа
+        const dotConfigs = {
+            1: [[50, 50]],
+            2: [[25, 25], [75, 75]],
+            3: [[25, 25], [50, 50], [75, 75]],
+            4: [[25, 25], [25, 75], [75, 25], [75, 75]],
+            5: [[25, 25], [25, 75], [50, 50], [75, 25], [75, 75]],
+            6: [[25, 25], [25, 50], [25, 75], [75, 25], [75, 50], [75, 75]]
+        };
+
+        for (let val = 1; val <= 6; val++) {
+            const faceDiv = document.getElementById(`face${val}`);
+            if (!faceDiv) continue;
+            faceDiv.innerHTML = '';
+            faceDiv.style.position = 'relative';
+            faceDiv.style.width = '100%';
+            faceDiv.style.height = '100%';
+            
+            const dots = dotConfigs[val];
+            dots.forEach(pos => {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.style.position = 'absolute';
+                dot.style.left = `${pos[0] - 9}%`;
+                dot.style.top = `${pos[1] - 9}%`;
+                dot.style.width = '18px';
+                dot.style.height = '18px';
+                dot.style.background = '#1a1a1a';
+                dot.style.borderRadius = '50%';
+                dot.style.boxShadow = 'inset -2px -2px 2px rgba(0,0,0,0.3), 1px 1px 1px rgba(255,255,255,0.5)';
+                faceDiv.appendChild(dot);
+            });
+        }
     }
 
-    // Добавление в историю
-    function addToHistory(rollValue) {
-        historyNumbers.unshift(rollValue);
+    // ========== АНИМАЦИЯ КУБИКА ==========
+    async function animateDiceRoll() {
+        if (isRolling) return;
+        isRolling = true;
+        
+        dice3d.classList.add('rolling-3d');
+        
+        await new Promise(resolve => setTimeout(resolve, 600));
+        
+        dice3d.classList.remove('rolling-3d');
+        
+        // Генерируем случайное число
+        const finalValue = Math.floor(Math.random() * 6) + 1;
+        
+        // Поворачиваем кубик так, чтобы нужная грань была спереди
+        rotateDiceToValue(finalValue);
+        
+        await new Promise(resolve => setTimeout(resolve, 100));
+        isRolling = false;
+        return finalValue;
+    }
+
+    // Поворот кубика к нужному значению
+    function rotateDiceToValue(value) {
+        // Вращаем кубик так, чтобы грань с нужным числом оказалась спереди
+        const rotations = {
+            1: 'rotateX(0deg) rotateY(0deg)',
+            2: 'rotateY(180deg)',
+            3: 'rotateY(90deg)',
+            4: 'rotateY(-90deg)',
+            5: 'rotateX(90deg)',
+            6: 'rotateX(-90deg)'
+        };
+        dice3d.style.transform = rotations[value] || rotations[1];
+    }
+
+    // ========== ИСТОРИЯ ==========
+    function addToHistory(value) {
+        historyNumbers.unshift(value);
         if (historyNumbers.length > 10) historyNumbers.pop();
         renderHistory();
     }
 
     function renderHistory() {
         if (historyNumbers.length === 0) {
-            historyList.innerHTML = '<div style="color:#b87c4f; font-size:14px;">—</div>';
+            historyListEl.innerHTML = '<div style="color:#6a6a6a; font-size:14px;">—</div>';
             return;
         }
-        historyList.innerHTML = historyNumbers.map(num => {
-            let symbol = '';
-            if (num === 1) symbol = '⚀';
-            else if (num === 2) symbol = '⚁';
-            else if (num === 3) symbol = '⚂';
-            else if (num === 4) symbol = '⚃';
-            else if (num === 5) symbol = '⚄';
-            else if (num === 6) symbol = '⚅';
-            return `<div class="history-item">${symbol}</div>`;
-        }).join('');
+        const diceSymbols = {1:'⚀',2:'⚁',3:'⚂',4:'⚃',5:'⚄',6:'⚅'};
+        historyListEl.innerHTML = historyNumbers.map(num => 
+            `<div class="history-item">${diceSymbols[num]}</div>`
+        ).join('');
     }
 
-    // Анимация кубика + генерация случайного числа от 1 до 6
-    async function rollDiceWithAnimation() {
-        if (isRolling) return;
-        isRolling = true;
-        
-        // анимация тряски
-        diceEl.classList.add('rolling');
-        
-        // Имитация вращения: меняем символы несколько раз
-        const rollInterval = setInterval(() => {
-            const fake = Math.floor(Math.random() * 6) + 1;
-            diceEl.innerText = getDiceSymbol(fake);
-        }, 80);
-        
-        // Длительность анимации ~0.5 сек
-        await new Promise(resolve => setTimeout(resolve, 500));
-        clearInterval(rollInterval);
-        
-        // Финальное случайное значение
-        const finalValue = Math.floor(Math.random() * 6) + 1;
-        diceEl.innerText = getDiceSymbol(finalValue);
-        diceEl.classList.remove('rolling');
-        
-        lastRoll = finalValue;
-        addToHistory(finalValue);
-        isRolling = false;
-        return finalValue;
-    }
-    
-    function getDiceSymbol(val) {
-        const map = {1:'⚀',2:'⚁',3:'⚂',4:'⚃',5:'⚄',6:'⚅'};
-        return map[val] || '🎲';
+    // ========== ОБНОВЛЕНИЕ БАЛАНСА ==========
+    function updateBalanceUI() {
+        balanceDisplay.innerText = Math.floor(balance).toLocaleString();
     }
 
-    // Обработка ставки (по клику на фишку)
-    async function placeBet(betType) {
-        if (isRolling) {
-            resultMsg.innerText = '⏳ Подождите, кубик уже крутится...';
+    // ========== БРОСОК ПО СТАВКЕ ==========
+    async function executeRoll() {
+        if (isRolling || !currentBet) {
             return;
         }
         
-        // Ставка делается на основе текущего броска, но у нас кубик выпадет по расписанию? 
-        // По условию: "кубик каждые 10 секунд подкидывается и была анимация". 
-        // Однако также нужно по клику на ставку сразу делать бросок? В ретро-игре обычно: 
-        // выбрал ставку -> бросил кубик.
-        // Для удобства: нажатие на любую ставку немедленно запускает бросок (если не идёт таймер)
-        // и по результату начисляет выигрыш по коэффициенту. При этом авто-бросок каждые 10 секунд тоже работает.
+        canPlaceBet = false;
         
-        // Отменяем предыдущий авто-бросок, чтобы не было коллизий
-        if (rollTimeout) {
-            clearTimeout(rollTimeout);
-            rollTimeout = null;
-        }
+        // Блокируем кнопки ставок
+        betChips.forEach(btn => btn.classList.add('disabled'));
         
-        // Запускаем анимацию и получаем число
-        const rolled = await rollDiceWithAnimation();
+        // Анимация кубика
+        const rolledValue = await animateDiceRoll();
+        addToHistory(rolledValue);
         
-        // Определяем, выиграл ли игрок
+        // Проверка выигрыша
         let win = false;
-        let multiplier = multipliers[betType];
+        const multiplier = multipliers[currentBet];
         
-        if (betType === 'even') {
-            win = (rolled % 2 === 0);
-        } else if (betType === 'odd') {
-            win = (rolled % 2 !== 0);
+        if (currentBet === 'even') {
+            win = (rolledValue % 2 === 0);
+        } else if (currentBet === 'odd') {
+            win = (rolledValue % 2 !== 0);
         } else {
-            // конкретная цифра 1..6
-            const betNumber = parseInt(betType);
-            win = (rolled === betNumber);
+            const betNum = parseInt(currentBet);
+            win = (rolledValue === betNum);
         }
         
-        // СТАВКА ФИШКАМИ: сумма ставки всегда 100 (условная фишка)
-        const stake = currentBetValue;
+        const diceSymbols = {1:'⚀',2:'⚁',3:'⚂',4:'⚃',5:'⚄',6:'⚅'};
         
         if (win) {
-            const winAmount = stake * multiplier;
-            // БЕСКОНЕЧНЫЕ ДЕНЬГИ: баланс только растёт, ставка не вычитается
+            const winAmount = stakeValue * multiplier;
             balance += winAmount;
             updateBalanceUI();
-            resultMsg.innerHTML = `🎲 ВЫИГРЫШ! Выпало ${rolled} (${getDiceSymbol(rolled)}). Ставка ${stake}💰 x${multiplier} = +${winAmount.toFixed(0)}💰`;
+            resultMsg.innerHTML = `🎉 ВЫИГРЫШ! Выпало ${rolledValue} ${diceSymbols[rolledValue]}! +${winAmount.toFixed(0)}💰`;
+            betStatus.innerHTML = `✅ ВЫИГРЫШ x${multiplier}! Сделайте новую ставку ✅`;
         } else {
-            // Проигрыш: по условию "бесконечно денег" — баланс не уменьшаем, просто сообщаем
-            // Чтобы игра была честной и интересной, проигрыш не тратит фишки.
-            resultMsg.innerHTML = `😞 ПРОИГРЫШ. Выпало ${rolled} (${getDiceSymbol(rolled)}). Ставка на ${betType === 'even' ? 'ЧЁТ' : betType === 'odd' ? 'НЕЧЁТ' : `цифру ${betType}`} не сыграла.`;
+            // Проигрыш без списания баланса (бесконечные деньги)
+            resultMsg.innerHTML = `😵 ПРОИГРЫШ. Выпало ${rolledValue} ${diceSymbols[rolledValue]}. Ставка на ${currentBet === 'even' ? 'ЧЁТ' : currentBet === 'odd' ? 'НЕЧЁТ' : `цифру ${currentBet}`} не сыграла.`;
+            betStatus.innerHTML = `❌ ПРОИГРЫШ! Попробуйте снова! ❌`;
         }
         
-        // Запускаем следующий авто-бросок через 10 секунд (только если нет активного)
-        scheduleAutoRoll();
+        // Сброс ставки
+        currentBet = null;
+        
+        // Разблокируем ставки
+        betChips.forEach(btn => btn.classList.remove('disabled'));
+        canPlaceBet = true;
+        
+        // Останавливаем таймер
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        timerDisplay.innerHTML = '⚡ Жду ставку ⚡';
     }
-    
-    // Автоматический бросок каждые 10 секунд с рандомной ставкой? 
-    // По просьбе "чтобы кубик каждые 10 секунд подкидывался и была анимация этого",
-    // мы будем просто кидать кубик для красоты и обновлять историю, но без начисления ставок.
-    // Однако если пользователь хочет пассивно смотреть, мы делаем демо-бросок (без ставок),
-    // но результат записывается в историю. Для полной азартности, в авто-броске не будет выигрыша,
-    // просто анимация и обновление последнего значения, чтобы игрок видел смену чисел.
-    async function autoRollOnly() {
-        if (isRolling) return;
-        const rolled = await rollDiceWithAnimation();
-        resultMsg.innerHTML = `🎲 АВТО-БРОСОК! Выпало ${rolled} (${getDiceSymbol(rolled)}). Сделайте ставку фишками!`;
-        // просто обновляем историю и всё
-    }
-    
-    function scheduleAutoRoll() {
-        if (rollTimeout) clearTimeout(rollTimeout);
-        rollTimeout = setTimeout(async () => {
-            if (!isRolling) {
-                await autoRollOnly();
-                scheduleAutoRoll(); // рекурсивный запуск каждые 10 сек
-            } else {
-                scheduleAutoRoll(); // отложить повторно
+
+    // ========== ЗАПУСК ТАЙМЕРА ==========
+    function startTimer(seconds) {
+        if (timerInterval) clearInterval(timerInterval);
+        
+        let remaining = seconds;
+        timerDisplay.innerHTML = `${remaining} сек...`;
+        
+        timerInterval = setInterval(() => {
+            remaining--;
+            timerDisplay.innerHTML = `${remaining} сек...`;
+            
+            if (remaining <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                if (currentBet && canPlaceBet && !isRolling) {
+                    executeRoll();
+                } else if (!currentBet) {
+                    timerDisplay.innerHTML = '⚡ Нет ставки ⚡';
+                    betStatus.innerHTML = '🎲 Сделайте ставку, чтобы начать отсчет 🎲';
+                }
             }
-        }, 10000);
+        }, 1000);
     }
-    
-    // Инициализация обработчиков кнопок ставок
-    function initBets() {
-        const betButtons = document.querySelectorAll('.bet-chip');
-        betButtons.forEach(btn => {
+
+    // ========== ОБРАБОТКА СТАВКИ ==========
+    function placeBet(betType) {
+        if (!canPlaceBet) {
+            resultMsg.innerHTML = '⏳ Подождите, идет бросок или таймер...';
+            return;
+        }
+        
+        if (isRolling) {
+            resultMsg.innerHTML = '🎲 Кубик крутится, подождите...';
+            return;
+        }
+        
+        // Устанавливаем ставку
+        currentBet = betType;
+        
+        let betName = '';
+        if (betType === 'even') betName = 'ЧЁТ (x2)';
+        else if (betType === 'odd') betName = 'НЕЧЁТ (x2)';
+        else betName = `ЦИФРА ${betType} (x3.5)`;
+        
+        betStatus.innerHTML = `🎯 СТАВКА: ${betName} | Бросок через 5 секунд 🎯`;
+        resultMsg.innerHTML = `✅ Ставка принята на ${betName}. Ждите броска...`;
+        
+        // Запускаем таймер 5 секунд
+        startTimer(5);
+    }
+
+    // ========== ИНИЦИАЛИЗАЦИЯ ==========
+    function init() {
+        drawDiceDots();
+        // Начальное положение кубика - грань 1
+        dice3d.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        updateBalanceUI();
+        
+        // Навешиваем обработчики на кнопки ставок
+        betChips.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const betType = btn.getAttribute('data-bet');
                 placeBet(betType);
             });
         });
+        
+        // Для красоты добавляем случайный бросок в историю
+        historyNumbers = [];
+        renderHistory();
+        
+        resultMsg.innerHTML = '🎲 Сделайте ставку! Бросок через 5 секунд 🎲';
     }
     
-    // для красоты делаем начальный бросок
-    async function firstRoll() {
-        await rollDiceWithAnimation();
-        resultMsg.innerHTML = '🎲 Игра началась! Ставьте на чет/нечет или число! Каждые 10 сек авто-бросок.';
-    }
-    
-    // Старт
-    function startGame() {
-        updateBalanceUI();
-        initBets();
-        firstRoll();
-        scheduleAutoRoll();
-    }
-    
-    startGame();
+    init();
 </script>
 </body>
 </html>
