@@ -2,419 +2,513 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎰 Casino Slots</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Русская Рулетка - Dice Game</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
             min-height: 100vh;
+            background: radial-gradient(circle at center, #1a472a 0%, #0a1f12 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px;
+            font-family: 'Courier New', 'Monaco', monospace;
+            padding: 20px;
         }
-        
+
+        /* Основной контейнер - стиль русской рулетки */
         .game-container {
-            max-width: 500px;
+            max-width: 550px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
+            background: linear-gradient(145deg, #2c2b1f 0%, #1e1d15 100%);
+            border-radius: 60px 60px 40px 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
             padding: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 3px solid #b87c4f;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            color: white;
+
+        /* Ретро-полоски (движущиеся) */
+        .game-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(180, 50, 50, 0.15) 0px,
+                rgba(180, 50, 50, 0.15) 3px,
+                transparent 3px,
+                transparent 12px,
+                rgba(200, 180, 60, 0.1) 12px,
+                rgba(200, 180, 60, 0.1) 15px,
+                transparent 15px,
+                transparent 24px
+            );
+            animation: stripeMove 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
         }
-        
-        .balance {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 12px 20px;
+
+        @keyframes stripeMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, -50px); }
+        }
+
+        /* Винтажный кожаный эффект */
+        .game-content {
+            position: relative;
+            z-index: 2;
+            background: rgba(30, 27, 20, 0.7);
             border-radius: 40px;
-            font-size: 20px;
-            font-weight: bold;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-        }
-        
-        .slot-machine {
-            background: #0f3460;
-            border-radius: 30px;
+            backdrop-filter: blur(3px);
             padding: 20px;
-            border: 3px solid #e94560;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(233, 69, 96, 0.3);
-            margin-bottom: 15px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 5px 10px rgba(0,0,0,0.3);
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-            aspect-ratio: 7/5;
+
+        /* Счетчик денег */
+        .money-counter {
+            background: #000000aa;
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            padding: 12px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #ffd966;
+            box-shadow: 0 0 10px rgba(255,200,0,0.3);
         }
-        
-        .cell {
-            background: #1a1a2e;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
+
+        .money-label {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #d4af37;
+            text-transform: uppercase;
             font-weight: bold;
-            aspect-ratio: 1;
-            border: 2px solid #0ff;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-            transition: all 0.1s ease;
-            color: white;
-            text-shadow: 0 0 5px currentColor;
         }
-        
-        .cell.win {
-            border-color: gold;
-            box-shadow: 0 0 20px gold, 0 0 40px orange;
-            transform: scale(1.05);
-            z-index: 10;
+
+        .money-amount {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffd966;
+            text-shadow: 0 0 5px #ff6600;
+            font-family: monospace;
         }
-        
-        .cell.spinning {
-            animation: spin 0.2s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(10deg) scale(0.9); }
-            50% { transform: rotate(0deg) scale(1); }
-            75% { transform: rotate(-10deg) scale(0.9); }
-            100% { transform: rotate(0deg) scale(1); }
-        }
-        
-        .controls {
-            display: flex;
-            gap: 10px;
+
+        /* Кубик */
+        .dice-area {
+            text-align: center;
             margin: 15px 0;
         }
-        
-        button {
-            flex: 1;
-            background: linear-gradient(45deg, #e94560, #0f3460);
-            border: none;
-            padding: 15px;
-            border-radius: 50px;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        button:active {
-            transform: scale(0.95);
-        }
-        
-        button:disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-        
-        .win-message {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: gold;
-            text-shadow: 0 0 10px orange;
-            min-height: 40px;
-            margin: 10px 0;
-        }
-        
-        .stats {
+
+        .dice {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            background: #f0f0f0;
+            border-radius: 20px;
             display: flex;
-            justify-content: space-between;
-            color: white;
-            background: rgba(0,0,0,0.3);
-            padding: 10px 15px;
-            border-radius: 30px;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            font-weight: bold;
+            box-shadow: 0 10px 0 #9b6a3c, inset 0 1px 4px white;
+            transition: all 0.1s ease;
+            background: linear-gradient(145deg, #fff, #e0e0e0);
+            color: #2c3e2f;
+            font-family: monospace;
+            position: relative;
+        }
+
+        .rolling {
+            animation: rollShake 0.4s cubic-bezier(0.4, 0, 0.2, 1) 3;
+        }
+
+        @keyframes rollShake {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(15deg) scale(1.1); }
+            50% { transform: rotate(-15deg) scale(1.1); }
+            75% { transform: rotate(8deg) scale(1.05); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        /* Ставки фишками */
+        .bets-section {
+            margin: 20px 0;
+        }
+
+        .bets-title {
+            text-align: center;
+            color: #e6c87c;
             font-size: 14px;
-            margin-top: 10px;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed #b87c4f;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .bets-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .bet-chip {
+            background: radial-gradient(circle at 30% 30%, #ffd966, #b87c2e);
+            border: none;
+            border-radius: 60px;
+            padding: 12px 0;
+            font-weight: bold;
+            font-size: 20px;
+            color: #1e2a1c;
+            text-shadow: 0 1px 0 rgba(255,255,200,0.8);
+            box-shadow: 0 5px 0 #6b3e1a;
+            cursor: pointer;
+            transition: 0.07s linear;
+            font-family: monospace;
+            font-weight: 800;
+        }
+
+        .bet-chip:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #6b3e1a;
+        }
+
+        .bet-chip.special {
+            background: radial-gradient(circle at 30% 30%, #c0c0c0, #7a5a3a);
+        }
+
+        /* Коэффициенты */
+        .bet-chip small {
+            display: block;
+            font-size: 11px;
+            color: #1f2c0e;
+        }
+
+        /* История */
+        .history-box {
+            background: #0f0e0aaa;
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            padding: 12px;
+            margin-top: 15px;
+            border: 1px solid #ab8e54;
+        }
+
+        .history-title {
+            font-size: 12px;
+            color: #dbb85c;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            min-height: 45px;
+            font-size: 28px;
+            font-weight: bold;
+            align-items: center;
+        }
+
+        .history-item {
+            background: #2f2a1f;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            box-shadow: inset 0 0 0 1px #dbb85c33, 0 2px 4px black;
+            font-size: 28px;
+        }
+
+        /* сообщение результата */
+        .result-message {
+            background: #00000099;
+            border-radius: 30px;
+            padding: 8px;
+            text-align: center;
+            margin-top: 12px;
+            font-size: 14px;
+            color: #ffdd99;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .info {
+            font-size: 11px;
+            text-align: center;
+            margin-top: 12px;
+            color: #bd9a5a;
+        }
+
+        button {
+            background: none;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="header">
-            <div class="balance">💰 <span id="balance">5000</span></div>
-            <div class="stats">🎰 <span id="games">0</span></div>
+<div class="game-container">
+    <div class="game-content">
+        <!-- БЕСКОНЕЧНЫЕ ДЕНЬГИ: просто огромный баланс, который не убывает -->
+        <div class="money-counter">
+            <div class="money-label">💰 ВАШ БАНК 💰</div>
+            <div class="money-amount" id="balanceDisplay">10,000</div>
         </div>
-        
-        <div class="slot-machine">
-            <div class="grid" id="slot-grid"></div>
+
+        <!-- Кубик с анимацией -->
+        <div class="dice-area">
+            <div class="dice" id="diceElement">🎲</div>
         </div>
-        
-        <div class="win-message" id="win-message">⚡ КРУТИ ⚡</div>
-        
-        <div class="controls">
-            <button id="spin-btn">🎰 SPIN (100)</button>
-            <button id="reset-btn">🔄 RESET</button>
+
+        <!-- Ставки: чет/нечет + числа 1-6 -->
+        <div class="bets-section">
+            <div class="bets-title">🎲 СТАВКИ ФИШКАМИ 🎲</div>
+            <div class="bets-grid">
+                <button class="bet-chip" data-bet="even">ЧЁТ <br><small>x2</small></button>
+                <button class="bet-chip" data-bet="odd">НЕЧЁТ <br><small>x2</small></button>
+                <button class="bet-chip special" data-bet="1">1 <br><small>x3.5</small></button>
+                <button class="bet-chip special" data-bet="2">2 <br><small>x3.5</small></button>
+                <button class="bet-chip special" data-bet="3">3 <br><small>x3.5</small></button>
+                <button class="bet-chip special" data-bet="4">4 <br><small>x3.5</small></button>
+                <button class="bet-chip special" data-bet="5">5 <br><small>x3.5</small></button>
+                <button class="bet-chip special" data-bet="6">6 <br><small>x3.5</small></button>
+            </div>
         </div>
-        
-        <div class="stats">
-            <div>💰 Выигрыш: <span id="totalWin">0</span></div>
-            <div>📊 RTP: <span id="rtp">0%</span></div>
-            <div id="profit">+0</div>
+
+        <!-- История выпавших чисел -->
+        <div class="history-box">
+            <div class="history-title">📜 ИСТОРИЯ ВЫПАДЕНИЙ</div>
+            <div class="history-list" id="historyList">
+                <div style="color:#b87c4f; font-size:14px;">—</div>
+            </div>
         </div>
+        <div class="result-message" id="resultMessage">⚡ Сделайте ставку! Кубик падает каждые 10 сек ⚡</div>
+        <div class="info">⚡ Чёт/Нечет x2 | Цифра x3.5 | Выигрыш начисляется бесконечно ⚡</div>
     </div>
+</div>
+
+<script>
+    // ------ БЕСКОНЕЧНЫЕ ДЕНЬГИ ------
+    // Баланс всегда огромный и при выигрышах увеличивается, но не тратится по факту
+    // Чтобы имитировать "бесконечные деньги", мы даём стартовый баланс 1_000_000_000,
+    // но игрок может ставить любую сумму, проигрыши не отнимают реально (игра казино не забирает фишки)
+    // Однако по условию: "бесконечно денег" значит баланс не уходит в минус, можно ставить бесконечно.
+    // Сделаем так: баланс всегда ≥ 1_000_000, и при ставке он не уменьшается, но выигрыш зачисляется!
+    // Но для реализма: пусть отображается баланс, который только растёт. Ставки условные, но выигрыши прибавляются.
     
-    <script>
-        // Конфигурация
-        const CONFIG = {
-            ROWS: 5,
-            COLS: 7,
-            BET: 100,
-            INITIAL_BALANCE: 5000,
-            
-            // ЭМОДЗИ вместо картинок (100% работают в Telegram)
-            SYMBOLS: ['🍒', '🍋', '🍊', '🍇', '💎', '7️⃣', '⭐', '🔔', '🎰', '👑'],
-            
-            // Множители выигрыша (сбалансированные)
-            MULTIPLIERS: {
-                7: 2,    // 7 одинаковых
-                8: 5,    // 8 одинаковых
-                9: 10,   // 9 одинаковых
-                10: 20,  // 10 одинаковых
-                11: 30,  // 11 одинаковых
-                12: 50,  // 12 одинаковых
-                13: 75,  // 13 одинаковых
-                14: 100, // 14+ одинаковых (Джекпот)
-                15: 100,
-                16: 100,
-                17: 100
-            }
-        };
+    let balance = 1000000;   // бесконечный запас
+    let currentBetValue = 100;   // фиксированная ставка "фишками" = 100
+    let lastRoll = null;
+    let rollTimeout = null;
+    let isRolling = false;
+
+    // История (макс 10 записей)
+    let historyNumbers = [];
+
+    // Элементы DOM
+    const diceEl = document.getElementById('diceElement');
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    const historyList = document.getElementById('historyList');
+    const resultMsg = document.getElementById('resultMessage');
+
+    // Коэффициенты
+    const multipliers = {
+        'even': 2,
+        'odd': 2,
+        '1': 3.5,
+        '2': 3.5,
+        '3': 3.5,
+        '4': 3.5,
+        '5': 3.5,
+        '6': 3.5
+    };
+
+    // Функция обновления UI баланса
+    function updateBalanceUI() {
+        balanceDisplay.innerText = Math.floor(balance).toLocaleString();
+    }
+
+    // Добавление в историю
+    function addToHistory(rollValue) {
+        historyNumbers.unshift(rollValue);
+        if (historyNumbers.length > 10) historyNumbers.pop();
+        renderHistory();
+    }
+
+    function renderHistory() {
+        if (historyNumbers.length === 0) {
+            historyList.innerHTML = '<div style="color:#b87c4f; font-size:14px;">—</div>';
+            return;
+        }
+        historyList.innerHTML = historyNumbers.map(num => {
+            let symbol = '';
+            if (num === 1) symbol = '⚀';
+            else if (num === 2) symbol = '⚁';
+            else if (num === 3) symbol = '⚂';
+            else if (num === 4) symbol = '⚃';
+            else if (num === 5) symbol = '⚄';
+            else if (num === 6) symbol = '⚅';
+            return `<div class="history-item">${symbol}</div>`;
+        }).join('');
+    }
+
+    // Анимация кубика + генерация случайного числа от 1 до 6
+    async function rollDiceWithAnimation() {
+        if (isRolling) return;
+        isRolling = true;
         
-        // Состояние игры
-        let gameState = {
-            balance: CONFIG.INITIAL_BALANCE,
-            gamesPlayed: 0,
-            totalWon: 0,
-            totalBet: 0,
-            grid: []
-        };
+        // анимация тряски
+        diceEl.classList.add('rolling');
         
-        // Создание сетки
-        function createGrid() {
-            const grid = document.getElementById('slot-grid');
-            grid.innerHTML = '';
-            
-            for (let i = 0; i < CONFIG.ROWS * CONFIG.COLS; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                cell.id = `cell-${i}`;
-                cell.textContent = '❓';
-                grid.appendChild(cell);
-            }
+        // Имитация вращения: меняем символы несколько раз
+        const rollInterval = setInterval(() => {
+            const fake = Math.floor(Math.random() * 6) + 1;
+            diceEl.innerText = getDiceSymbol(fake);
+        }, 80);
+        
+        // Длительность анимации ~0.5 сек
+        await new Promise(resolve => setTimeout(resolve, 500));
+        clearInterval(rollInterval);
+        
+        // Финальное случайное значение
+        const finalValue = Math.floor(Math.random() * 6) + 1;
+        diceEl.innerText = getDiceSymbol(finalValue);
+        diceEl.classList.remove('rolling');
+        
+        lastRoll = finalValue;
+        addToHistory(finalValue);
+        isRolling = false;
+        return finalValue;
+    }
+    
+    function getDiceSymbol(val) {
+        const map = {1:'⚀',2:'⚁',3:'⚂',4:'⚃',5:'⚄',6:'⚅'};
+        return map[val] || '🎲';
+    }
+
+    // Обработка ставки (по клику на фишку)
+    async function placeBet(betType) {
+        if (isRolling) {
+            resultMsg.innerText = '⏳ Подождите, кубик уже крутится...';
+            return;
         }
         
-        // Получение случайного символа
-        function getRandomSymbol() {
-            const randomIndex = Math.floor(Math.random() * CONFIG.SYMBOLS.length);
-            return CONFIG.SYMBOLS[randomIndex];
+        // Ставка делается на основе текущего броска, но у нас кубик выпадет по расписанию? 
+        // По условию: "кубик каждые 10 секунд подкидывается и была анимация". 
+        // Однако также нужно по клику на ставку сразу делать бросок? В ретро-игре обычно: 
+        // выбрал ставку -> бросил кубик.
+        // Для удобства: нажатие на любую ставку немедленно запускает бросок (если не идёт таймер)
+        // и по результату начисляет выигрыш по коэффициенту. При этом авто-бросок каждые 10 секунд тоже работает.
+        
+        // Отменяем предыдущий авто-бросок, чтобы не было коллизий
+        if (rollTimeout) {
+            clearTimeout(rollTimeout);
+            rollTimeout = null;
         }
         
-        // Анимация вращения
-        async function spinAnimation() {
-            const cells = document.querySelectorAll('.cell');
-            const spins = 10;
-            
-            // Добавляем класс анимации
-            cells.forEach(cell => cell.classList.add('spinning'));
-            
-            // Меняем символы во время анимации
-            for (let i = 0; i < spins; i++) {
-                await new Promise(resolve => setTimeout(resolve, 50));
-                cells.forEach(cell => {
-                    cell.textContent = getRandomSymbol();
-                });
-            }
-            
-            // Убираем анимацию
-            cells.forEach(cell => cell.classList.remove('spinning'));
+        // Запускаем анимацию и получаем число
+        const rolled = await rollDiceWithAnimation();
+        
+        // Определяем, выиграл ли игрок
+        let win = false;
+        let multiplier = multipliers[betType];
+        
+        if (betType === 'even') {
+            win = (rolled % 2 === 0);
+        } else if (betType === 'odd') {
+            win = (rolled % 2 !== 0);
+        } else {
+            // конкретная цифра 1..6
+            const betNumber = parseInt(betType);
+            win = (rolled === betNumber);
         }
         
-        // Проверка выигрыша
-        function checkWin(grid) {
-            const counts = {};
-            const positions = {};
-            
-            // Подсчет символов
-            for (let row = 0; row < CONFIG.ROWS; row++) {
-                for (let col = 0; col < CONFIG.COLS; col++) {
-                    const symbol = grid[row][col];
-                    counts[symbol] = (counts[symbol] || 0) + 1;
-                    
-                    if (!positions[symbol]) positions[symbol] = [];
-                    positions[symbol].push({row, col});
-                }
-            }
-            
-            // Поиск максимальной комбинации
-            let maxCount = 0;
-            let winSymbol = null;
-            
-            for (let symbol in counts) {
-                if (counts[symbol] >= 7 && counts[symbol] > maxCount) {
-                    maxCount = counts[symbol];
-                    winSymbol = symbol;
-                }
-            }
-            
-            if (maxCount >= 7) {
-                const multiplier = CONFIG.MULTIPLIERS[maxCount] || 100;
-                const winAmount = CONFIG.BET * multiplier;
-                
-                // Корректировка RTP (95%)
-                if (gameState.gamesPlayed > 0) {
-                    const currentRTP = gameState.totalWon / gameState.totalBet;
-                    if (currentRTP > 0.95) {
-                        return { win: Math.floor(winAmount * 0.7), positions: positions[winSymbol] || [], count: maxCount };
-                    }
-                }
-                
-                return { win: winAmount, positions: positions[winSymbol] || [], count: maxCount };
-            }
-            
-            return { win: 0, positions: [], count: 0 };
+        // СТАВКА ФИШКАМИ: сумма ставки всегда 100 (условная фишка)
+        const stake = currentBetValue;
+        
+        if (win) {
+            const winAmount = stake * multiplier;
+            // БЕСКОНЕЧНЫЕ ДЕНЬГИ: баланс только растёт, ставка не вычитается
+            balance += winAmount;
+            updateBalanceUI();
+            resultMsg.innerHTML = `🎲 ВЫИГРЫШ! Выпало ${rolled} (${getDiceSymbol(rolled)}). Ставка ${stake}💰 x${multiplier} = +${winAmount.toFixed(0)}💰`;
+        } else {
+            // Проигрыш: по условию "бесконечно денег" — баланс не уменьшаем, просто сообщаем
+            // Чтобы игра была честной и интересной, проигрыш не тратит фишки.
+            resultMsg.innerHTML = `😞 ПРОИГРЫШ. Выпало ${rolled} (${getDiceSymbol(rolled)}). Ставка на ${betType === 'even' ? 'ЧЁТ' : betType === 'odd' ? 'НЕЧЁТ' : `цифру ${betType}`} не сыграла.`;
         }
         
-        // Обновление сетки
-        function updateGrid(grid, winPositions = []) {
-            for (let i = 0; i < CONFIG.ROWS * CONFIG.COLS; i++) {
-                const cell = document.getElementById(`cell-${i}`);
-                const row = Math.floor(i / CONFIG.COLS);
-                const col = i % CONFIG.COLS;
-                
-                cell.textContent = grid[row][col];
-                
-                // Подсветка выигрыша
-                const isWin = winPositions.some(pos => pos.row === row && pos.col === col);
-                if (isWin) {
-                    cell.classList.add('win');
-                } else {
-                    cell.classList.remove('win');
-                }
-            }
-        }
-        
-        // Основная функция спина
-        async function spin() {
-            if (gameState.balance < CONFIG.BET) {
-                document.getElementById('win-message').textContent = '❌ Не хватает денег!';
-                return;
-            }
-            
-            // Блокируем кнопку
-            document.getElementById('spin-btn').disabled = true;
-            document.getElementById('win-message').textContent = '🎰 ВРАЩЕНИЕ...';
-            
-            // Анимация
-            await spinAnimation();
-            
-            // Списываем ставку
-            gameState.balance -= CONFIG.BET;
-            gameState.gamesPlayed++;
-            gameState.totalBet += CONFIG.BET;
-            
-            // Генерируем новую сетку
-            const newGrid = [];
-            for (let row = 0; row < CONFIG.ROWS; row++) {
-                const rowSymbols = [];
-                for (let col = 0; col < CONFIG.COLS; col++) {
-                    rowSymbols.push(getRandomSymbol());
-                }
-                newGrid.push(rowSymbols);
-            }
-            
-            // Проверяем выигрыш
-            const result = checkWin(newGrid);
-            
-            // Обновляем сетку
-            updateGrid(newGrid, result.positions);
-            gameState.grid = newGrid;
-            
-            // Выплачиваем выигрыш
-            if (result.win > 0) {
-                gameState.balance += result.win;
-                gameState.totalWon += result.win;
-                document.getElementById('win-message').innerHTML = `🎉 ВЫИГРЫШ: +${result.win} (${result.count} символов) 🎉`;
+        // Запускаем следующий авто-бросок через 10 секунд (только если нет активного)
+        scheduleAutoRoll();
+    }
+    
+    // Автоматический бросок каждые 10 секунд с рандомной ставкой? 
+    // По просьбе "чтобы кубик каждые 10 секунд подкидывался и была анимация этого",
+    // мы будем просто кидать кубик для красоты и обновлять историю, но без начисления ставок.
+    // Однако если пользователь хочет пассивно смотреть, мы делаем демо-бросок (без ставок),
+    // но результат записывается в историю. Для полной азартности, в авто-броске не будет выигрыша,
+    // просто анимация и обновление последнего значения, чтобы игрок видел смену чисел.
+    async function autoRollOnly() {
+        if (isRolling) return;
+        const rolled = await rollDiceWithAnimation();
+        resultMsg.innerHTML = `🎲 АВТО-БРОСОК! Выпало ${rolled} (${getDiceSymbol(rolled)}). Сделайте ставку фишками!`;
+        // просто обновляем историю и всё
+    }
+    
+    function scheduleAutoRoll() {
+        if (rollTimeout) clearTimeout(rollTimeout);
+        rollTimeout = setTimeout(async () => {
+            if (!isRolling) {
+                await autoRollOnly();
+                scheduleAutoRoll(); // рекурсивный запуск каждые 10 сек
             } else {
-                document.getElementById('win-message').textContent = '😢 Повезет в следующий раз';
+                scheduleAutoRoll(); // отложить повторно
             }
-            
-            // Обновляем статистику
-            updateStats();
-            
-            // Разблокируем кнопку
-            document.getElementById('spin-btn').disabled = false;
-        }
-        
-        // Обновление статистики
-        function updateStats() {
-            document.getElementById('balance').textContent = gameState.balance;
-            document.getElementById('games').textContent = gameState.gamesPlayed;
-            document.getElementById('totalWin').textContent = gameState.totalWon;
-            
-            const rtp = gameState.totalBet > 0 ? ((gameState.totalWon / gameState.totalBet) * 100).toFixed(1) : 0;
-            document.getElementById('rtp').textContent = rtp + '%';
-            
-            const profit = gameState.balance - CONFIG.INITIAL_BALANCE;
-            document.getElementById('profit').textContent = (profit >= 0 ? '+' : '') + profit;
-            document.getElementById('profit').style.color = profit >= 0 ? '#2ecc71' : '#e74c3c';
-        }
-        
-        // Сброс игры
-        function resetGame() {
-            gameState = {
-                balance: CONFIG.INITIAL_BALANCE,
-                gamesPlayed: 0,
-                totalWon: 0,
-                totalBet: 0,
-                grid: []
-            };
-            
-            // Заполняем сетку плейсхолдерами
-            const emptyGrid = [];
-            for (let row = 0; row < CONFIG.ROWS; row++) {
-                emptyGrid.push(Array(CONFIG.COLS).fill('❓'));
-            }
-            
-            updateGrid(emptyGrid, []);
-            document.getElementById('win-message').textContent = '⚡ КРУТИ ⚡';
-            updateStats();
-        }
-        
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', () => {
-            createGrid();
-            resetGame();
-            
-            document.getElementById('spin-btn').addEventListener('click', spin);
-            document.getElementById('reset-btn').addEventListener('click', resetGame);
+        }, 10000);
+    }
+    
+    // Инициализация обработчиков кнопок ставок
+    function initBets() {
+        const betButtons = document.querySelectorAll('.bet-chip');
+        betButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const betType = btn.getAttribute('data-bet');
+                placeBet(betType);
+            });
         });
-    </script>
+    }
+    
+    // для красоты делаем начальный бросок
+    async function firstRoll() {
+        await rollDiceWithAnimation();
+        resultMsg.innerHTML = '🎲 Игра началась! Ставьте на чет/нечет или число! Каждые 10 сек авто-бросок.';
+    }
+    
+    // Старт
+    function startGame() {
+        updateBalanceUI();
+        initBets();
+        firstRoll();
+        scheduleAutoRoll();
+    }
+    
+    startGame();
+</script>
 </body>
 </html>
